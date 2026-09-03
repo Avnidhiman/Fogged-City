@@ -1,0 +1,1037 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;600;700&display=swap');
+
+:root {
+  --bg-dark: #07090e;
+  --bg-card: rgba(18, 22, 34, 0.86);
+  --bg-card-hover: rgba(26, 32, 48, 0.94);
+  --border-light: rgba(255, 255, 255, 0.12);
+  --border-accent: rgba(0, 230, 204, 0.4);
+  
+  --text-main: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-bright: #ffffff;
+  
+  --accent-cyan: #00f2fe;
+  --accent-blue: #4facfe;
+  --accent-gold: #ffb703;
+  --accent-green: #00f5d4;
+  --accent-red: #ff4d6d;
+  
+  --shadow-glow: 0 0 25px rgba(0, 242, 254, 0.25);
+  --font-title: 'Cinzel', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* App Wrapper */
+.app-main-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: radial-gradient(circle at 50% 20%, #151928 0%, #07090e 100%);
+}
+
+/* Reusable Screen Frame */
+.screen {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.temple-run-fog-wrapper {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+
+/* Top Ambient Canopy Mist */
+.fog-canopy {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  right: 0;
+  height: 35%;
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 242, 254, 0.12) 0%, rgba(18, 22, 34, 0.3) 60%, transparent 100%);
+  filter: blur(25px);
+}
+
+/* Midground Swirling Mist Clouds (Temple Run Style Rolling Animations) */
+.mist-cloud {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(45px);
+  mix-blend-mode: screen;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.mist-cloud-1 {
+  width: 750px;
+  height: 500px;
+  top: 10%;
+  left: -15%;
+  background: radial-gradient(circle at center, rgba(0, 242, 254, 0.25) 0%, rgba(79, 172, 254, 0.1) 50%, transparent 75%);
+  animation: templeRunCloudRollLeft 22s infinite alternate ease-in-out;
+}
+
+.mist-cloud-2 {
+  width: 850px;
+  height: 600px;
+  top: 30%;
+  right: -20%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.18) 0%, rgba(0, 242, 254, 0.1) 60%, transparent 80%);
+  animation: templeRunCloudRollRight 18s infinite alternate ease-in-out;
+}
+
+.mist-cloud-3 {
+  width: 900px;
+  height: 550px;
+  bottom: 5%;
+  left: 5%;
+  background: radial-gradient(circle at center, rgba(79, 172, 254, 0.2) 0%, transparent 75%);
+  animation: templeRunCloudRollLeft 26s infinite alternate ease-in-out;
+}
+
+@keyframes templeRunCloudRollLeft {
+  0% {
+    transform: translate(-10%, 0) scale(1) rotate(0deg);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translate(15%, 5%) scale(1.18) rotate(4deg);
+    opacity: 0.75;
+  }
+  100% {
+    transform: translate(35%, -5%) scale(0.95) rotate(-3deg);
+    opacity: 0.4;
+  }
+}
+
+@keyframes templeRunCloudRollRight {
+  0% {
+    transform: translate(10%, 0) scale(1) rotate(0deg);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate(-15%, -6%) scale(1.22) rotate(-5deg);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(-30%, 4%) scale(0.9) rotate(3deg);
+    opacity: 0.35;
+  }
+}
+
+/* Low-Lying Ground Fog Waves (Temple Run Swamp/Jungle Rolling Fog) */
+.ground-fog-wave {
+  position: absolute;
+  bottom: -5%;
+  left: -20%;
+  width: 140%;
+  height: 38vh;
+  filter: blur(25px);
+  pointer-events: none;
+}
+
+.wave-back {
+  background: radial-gradient(ellipse at 50% 100%, rgba(0, 242, 254, 0.22) 0%, rgba(18, 22, 34, 0.7) 45%, transparent 80%);
+  animation: groundWaveRollBack 16s infinite alternate ease-in-out;
+  opacity: 0.75;
+}
+
+.wave-mid {
+  background: radial-gradient(ellipse at 30% 100%, rgba(255, 255, 255, 0.18) 0%, rgba(79, 172, 254, 0.45) 50%, transparent 85%);
+  animation: groundWaveRollMid 12s infinite alternate ease-in-out;
+  opacity: 0.85;
+}
+
+.wave-front {
+  background: radial-gradient(ellipse at 70% 100%, rgba(0, 242, 254, 0.25) 0%, rgba(7, 9, 14, 0.9) 60%, transparent 90%);
+  animation: groundWaveRollFront 14s infinite alternate ease-in-out;
+  opacity: 0.95;
+}
+
+@keyframes groundWaveRollBack {
+  0% { transform: translateX(-5%) scaleY(1); opacity: 0.55; }
+  50% { transform: translateX(8%) scaleY(1.3); opacity: 0.85; }
+  100% { transform: translateX(18%) scaleY(1.1); opacity: 0.55; }
+}
+
+@keyframes groundWaveRollMid {
+  0% { transform: translateX(8%) scaleY(1.1); opacity: 0.6; }
+  50% { transform: translateX(-10%) scaleY(1.4); opacity: 0.9; }
+  100% { transform: translateX(-20%) scaleY(0.95); opacity: 0.55; }
+}
+
+@keyframes groundWaveRollFront {
+  0% { transform: translateX(-8%) scaleY(1); opacity: 0.7; }
+  50% { transform: translateX(12%) scaleY(1.35); opacity: 0.95; }
+  100% { transform: translateX(25%) scaleY(1.05); opacity: 0.65; }
+}
+
+/* Floating Atmospheric Fog Particles / Spores */
+.fog-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.p-spore {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 242, 254, 0.65);
+  box-shadow: 0 0 12px var(--accent-cyan);
+  animation: sporeFloatUp 12s infinite linear;
+}
+
+.p1 { width: 5px; height: 5px; left: 15%; bottom: 10%; animation-duration: 10s; animation-delay: 0s; }
+.p2 { width: 7px; height: 7px; left: 35%; bottom: 5%; animation-duration: 14s; animation-delay: 2s; }
+.p3 { width: 4px; height: 4px; left: 55%; bottom: 12%; animation-duration: 9s; animation-delay: 4s; }
+.p4 { width: 6px; height: 6px; left: 75%; bottom: 8%; animation-duration: 13s; animation-delay: 1s; }
+.p5 { width: 5px; height: 5px; left: 25%; bottom: 15%; animation-duration: 11s; animation-delay: 5s; }
+.p6 { width: 8px; height: 8px; left: 85%; bottom: 4%; animation-duration: 16s; animation-delay: 3s; }
+.p7 { width: 4px; height: 4px; left: 45%; bottom: 20%; animation-duration: 12s; animation-delay: 6s; }
+.p8 { width: 6px; height: 6px; left: 65%; bottom: 2%; animation-duration: 15s; animation-delay: 7s; }
+
+@keyframes sporeFloatUp {
+  0% {
+    transform: translateY(0) scale(0.7);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.8;
+  }
+  75% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-80vh) scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Cold Open Screen Dynamic Temple Run Clouds */
+.cold-open-screen {
+  background: radial-gradient(circle at 50% 40%, #0d121f 0%, #030407 100%);
+  cursor: pointer;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cold-open-cloud-layer {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(55px);
+  pointer-events: none;
+  opacity: 0.65;
+  mix-blend-mode: screen;
+}
+
+.cloud-layer-1 {
+  width: 950px;
+  height: 650px;
+  top: 5%;
+  left: -20%;
+  background: radial-gradient(circle at center, rgba(0, 242, 254, 0.28) 0%, rgba(79, 172, 254, 0.12) 55%, transparent 80%);
+  animation: templeRunCloudRollLeft 20s infinite alternate ease-in-out;
+}
+
+.cloud-layer-2 {
+  width: 1050px;
+  height: 750px;
+  bottom: -20%;
+  right: -25%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.2) 0%, rgba(0, 242, 254, 0.1) 60%, transparent 85%);
+  animation: templeRunCloudRollRight 17s infinite alternate ease-in-out;
+}
+
+.cloud-layer-3 {
+  width: 800px;
+  height: 550px;
+  top: 35%;
+  left: 15%;
+  background: radial-gradient(circle at center, rgba(0, 242, 254, 0.18) 0%, transparent 75%);
+  animation: templeRunCloudRollLeft 24s infinite alternate ease-in-out;
+}
+
+/* ==========================================================================
+   UI COMPONENTS & CARDS
+   ========================================================================== */
+
+/* Glassmorphism Card Utility */
+.glass-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 680px;
+  position: relative;
+  z-index: 10;
+}
+
+.glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+/* Typography Standards */
+h1, h2, h3 {
+  font-family: var(--font-title);
+  letter-spacing: 0.05em;
+  color: var(--text-bright);
+}
+
+.screen-title {
+  font-size: 2.25rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #ffffff 0%, #a1a8c3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.screen-subtitle {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--accent-cyan);
+  margin-bottom: 0.25rem;
+}
+
+.screen-desc {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Button Styles - Clean, Static Buttons */
+button {
+  font-family: var(--font-body);
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+  color: #07090e;
+  padding: 0.9rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 700;
+  box-shadow: 0 4px 20px rgba(0, 242, 254, 0.3);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 6px 28px rgba(0, 242, 254, 0.5);
+  filter: brightness(1.1);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-main);
+  border: 1px solid var(--border-light);
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--text-bright);
+}
+
+.btn-reset-sm {
+  background: rgba(255, 77, 109, 0.15);
+  color: var(--accent-red);
+  border: 1px solid rgba(255, 77, 109, 0.3);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+
+.btn-reset-sm:hover {
+  background: rgba(255, 77, 109, 0.3);
+}
+
+/* Alert Boxes */
+.alert-box {
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.alert-box.error {
+  background: rgba(255, 77, 109, 0.15);
+  border: 1px solid rgba(255, 77, 109, 0.4);
+  color: #ff85a2;
+}
+
+.alert-box.success {
+  background: rgba(0, 245, 212, 0.15);
+  border: 1px solid rgba(0, 245, 212, 0.4);
+  color: var(--accent-green);
+}
+
+.cinematic-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 20%, rgba(0, 0, 0, 0.95) 100%);
+  pointer-events: none;
+}
+
+.cold-open-content {
+  position: relative;
+  z-index: 10;
+  max-width: 700px;
+}
+
+.typewriter-line {
+  font-family: var(--font-title);
+  font-size: 1.2rem;
+  letter-spacing: 0.25em;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 1rem;
+  opacity: 1;
+}
+
+.title-container {
+  position: relative;
+  display: inline-block;
+}
+
+.title-glitch {
+  font-size: 3.5rem;
+  font-weight: 900;
+  margin: 2.5rem 0 3rem;
+  letter-spacing: 0.15em;
+  opacity: 1;
+  text-shadow: 0 0 35px rgba(0, 242, 254, 0.5);
+}
+
+.tap-to-begin-btn {
+  opacity: 1;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--text-bright);
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  letter-spacing: 0.2em;
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+}
+
+/* Team Setup Form */
+.setup-form .form-group {
+  margin-bottom: 1.75rem;
+  text-align: left;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent-cyan);
+  margin-bottom: 0.5rem;
+}
+
+.form-input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 0.9rem 1.25rem;
+  color: var(--text-bright);
+  font-family: var(--font-body);
+  font-size: 1rem;
+}
+
+.form-input:focus {
+  border-color: var(--accent-cyan);
+  outline: none;
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
+}
+
+.player-input-row {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.btn-remove {
+  background: rgba(255, 77, 109, 0.2);
+  color: var(--accent-red);
+  border: 1px solid rgba(255, 77, 109, 0.3);
+  border-radius: 8px;
+  width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.add-player-btn {
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.form-actions {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.continue-btn {
+  width: 100%;
+}
+
+/* Role Select Screen */
+.role-header {
+  text-align: center;
+  max-width: 600px;
+  margin-bottom: 2rem;
+}
+
+.players-role-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  width: 100%;
+  max-width: 800px;
+}
+
+.player-role-card {
+  max-width: 100%;
+  padding: 1.75rem;
+}
+
+.roles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.role-option-card {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 1.25rem;
+  cursor: pointer;
+  position: relative;
+  text-align: center;
+}
+
+.role-option-card.selected {
+  background: rgba(0, 242, 254, 0.1);
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+}
+
+/* Role Perspective Switcher Tabs */
+.role-tab-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.role-tab-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent-cyan);
+}
+
+.role-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.role-tab-btn {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border-light);
+  color: var(--text-muted);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.role-tab-btn.active {
+  background: rgba(0, 242, 254, 0.15);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+}
+
+.perspective-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent-cyan);
+  margin-bottom: 0.75rem;
+}
+
+/* Map Screen */
+.map-screen {
+  padding: 1.5rem;
+  justify-content: flex-start;
+  gap: 1.5rem;
+}
+
+.map-header {
+  max-width: 1000px;
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.city-title {
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.team-badge {
+  font-size: 0.85rem;
+  color: var(--accent-cyan);
+  letter-spacing: 0.1em;
+  margin-left: 0.75rem;
+}
+
+.map-stats-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.stat-pill {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-light);
+  padding: 0.4rem 0.9rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+}
+
+.timer-pill {
+  border-color: var(--accent-cyan);
+}
+
+.stat-pill.highlight {
+  border-color: var(--accent-gold);
+}
+
+.stat-label {
+  color: var(--text-muted);
+  margin-right: 0.4rem;
+}
+
+.stat-value {
+  color: var(--text-bright);
+  font-weight: 700;
+}
+
+.leaderboard-trigger-btn {
+  background: rgba(255, 183, 3, 0.15);
+  border-color: rgba(255, 183, 3, 0.4);
+  color: var(--accent-gold);
+}
+
+.map-container {
+  max-width: 1000px;
+  height: 480px;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.map-background {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: #090c15;
+}
+
+.city-svg-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* 5 Zone Fog Overlays on Map */
+.fog-overlay {
+  position: absolute;
+  background: radial-gradient(circle at center, rgba(18, 22, 34, 0.95) 0%, rgba(7, 9, 14, 0.98) 80%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.zone-1-fog { top: 0; left: 0; width: 45%; height: 50%; }
+.zone-2-fog { top: 0; right: 0; width: 55%; height: 50%; }
+.zone-3-fog { bottom: 0; left: 30%; width: 40%; height: 50%; }
+.zone-4-fog { bottom: 0; left: 0; width: 35%; height: 50%; }
+.zone-5-fog { bottom: 0; right: 0; width: 35%; height: 50%; }
+
+.fog-overlay.cleared {
+  opacity: 0.1;
+  filter: blur(25px);
+}
+
+/* 5 Zone Markers on Map - Static Pins */
+.zone-marker {
+  position: absolute;
+  z-index: 3;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.marker-1 { top: 18%; left: 16%; }
+.marker-2 { top: 22%; right: 18%; }
+.marker-3 { bottom: 25%; left: 45%; }
+.marker-4 { bottom: 18%; left: 15%; }
+.marker-5 { bottom: 18%; right: 15%; }
+
+.marker-pin {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(18, 22, 34, 0.92);
+  border: 2px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.zone-marker.status-active .marker-pin {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 20px var(--accent-cyan);
+}
+
+.zone-marker.status-uncovered .marker-pin {
+  border-color: var(--accent-gold);
+  background: rgba(255, 183, 3, 0.15);
+  box-shadow: 0 0 20px rgba(255, 183, 3, 0.4);
+}
+
+.zone-marker.status-locked {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.marker-label {
+  margin-top: 0.5rem;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 0.4rem 0.8rem;
+  text-align: center;
+}
+
+.zone-number {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent-cyan);
+}
+
+.zone-name {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-bright);
+}
+
+.map-footer {
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.hint-banner {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* Zone Screen & Arrival */
+.zone-screen {
+  justify-content: flex-start;
+  gap: 1.5rem;
+  overflow-y: auto;
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+}
+
+.zone-top-bar {
+  max-width: 780px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.zone-content-area {
+  width: 100%;
+  max-width: 780px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+}
+
+.location-banner {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding: 1.75rem;
+}
+
+.riddle-container-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.zone-stats-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.timer-badge {
+  background: rgba(0, 242, 254, 0.1);
+  border: 1px solid var(--accent-cyan);
+  padding: 0.3rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  color: var(--accent-cyan);
+}
+
+.location-icon-container {
+  margin-bottom: 1rem;
+}
+
+.location-emoji {
+  font-size: 3.5rem;
+  display: inline-block;
+}
+
+/* Hint Button Component */
+.hint-container {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.hint-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.hint-buttons-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.hint-btn-pill {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-light);
+  color: var(--text-main);
+  padding: 0.65rem 1.1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  flex: 1 1 180px;
+}
+
+.hint-btn-pill:hover {
+  background: rgba(0, 242, 254, 0.1);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+.hint-btn-pill.unlocked {
+  background: rgba(0, 245, 212, 0.12);
+  border-color: var(--accent-green);
+  color: var(--accent-green);
+}
+
+.hint-display-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.hint-box {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 0.9rem;
+  font-size: 0.9rem;
+  border: 1px solid var(--border-light);
+}
+
+.hint-1 { border-color: rgba(0, 242, 254, 0.3); }
+.hint-2 { border-color: rgba(255, 183, 3, 0.3); }
+.hint-3 { border-color: rgba(255, 77, 109, 0.3); }
+
+/* Leaderboard Modal & Table */
+.leaderboard-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.leaderboard-card {
+  max-width: 750px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.leaderboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.leaderboard-table th {
+  font-family: var(--font-title);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--accent-cyan);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.leaderboard-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.rank-summary-card {
+  background: rgba(0, 242, 254, 0.1);
+  border: 1px solid var(--accent-cyan);
+  padding: 1.25rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.rank-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent-cyan);
+}
+
+.rank-score {
+  font-size: 1.75rem;
+  margin: 0.25rem 0;
+  color: var(--accent-gold);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 640px) {
+  .screen {
+    padding: 1.25rem 1rem;
+  }
+  
+  .glass-card {
+    padding: 1.5rem;
+  }
+  
+  .screen-title {
+    font-size: 1.75rem;
+  }
+  
+  .title-glitch {
+    font-size: 2.5rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .map-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .map-container {
+    height: 380px;
+  }
+}
