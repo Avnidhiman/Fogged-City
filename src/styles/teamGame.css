@@ -1,0 +1,203 @@
+/* ==========================================================================
+   THE FOGGED CITY - TEAM SETUP, ROLE TOOLS, CLOCK, FINALE, LEADERBOARD
+   Reuses the tokens in theme.css (glass panels, amber/cyan accents).
+   ========================================================================== */
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+.btn-ghost {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 0.6rem 1.1rem; border-radius: var(--radius-md);
+  background: rgba(30, 41, 59, 0.55); border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #e2e8f0; font-size: 0.9rem; font-weight: 500; cursor: pointer;
+  transition: all 180ms ease;
+}
+.btn-ghost:hover:not(:disabled) { border-color: var(--accent-amber); color: #fff; }
+.btn-ghost:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-ghost.danger { border-color: rgba(244, 63, 94, 0.5); color: #fecdd3; }
+
+.link-btn {
+  display: inline-flex; align-items: center; gap: 0.3rem; background: none; border: none;
+  padding: 0; color: var(--accent-cyan-light); font-size: 0.78rem; cursor: pointer; text-decoration: underline;
+}
+.link-btn:hover { color: #fff; }
+
+/* ---------- Full-page cards (team setup, leaderboard) ---------- */
+.team-page {
+  position: fixed; inset: 0; overflow-y: auto; display: flex; align-items: flex-start; justify-content: center;
+  padding: 2rem 1rem; background:
+    radial-gradient(1100px 600px at 20% -10%, rgba(6, 182, 212, 0.12), transparent 60%),
+    radial-gradient(900px 500px at 90% 110%, rgba(245, 158, 11, 0.1), transparent 60%),
+    var(--bg-primary);
+}
+.team-card {
+  width: 100%; max-width: 640px; margin: auto; display: flex; flex-direction: column; gap: 1.25rem;
+  background: rgba(11, 16, 28, 0.88); backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15); border-radius: var(--radius-lg);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 40px rgba(245, 158, 11, 0.12);
+  padding: 2rem;
+}
+.team-head h1 { font-family: var(--font-display); font-size: 1.9rem; letter-spacing: 0.01em; color: #f8fafc; margin: 0.35rem 0; }
+.team-head p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.55; }
+.team-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--font-display);
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent-amber-light); background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4); padding: 0.2rem 0.65rem; border-radius: var(--radius-full);
+}
+
+.team-field, .member-row { display: flex; flex-direction: column; gap: 0.45rem; }
+.team-field label, .member-label { font-size: 0.82rem; font-weight: 600; color: #cbd5e1; letter-spacing: 0.04em; }
+.team-card input[type='text'] {
+  width: 100%; padding: 0.75rem 0.95rem; font-size: 0.95rem; color: #f8fafc;
+  background: rgba(30, 41, 59, 0.65); border: 1px solid rgba(255, 255, 255, 0.14); border-radius: var(--radius-sm);
+}
+.team-card input[type='text']::placeholder { color: var(--text-muted); }
+.team-card input[type='text']:focus-visible { outline: 2px solid var(--accent-cyan); outline-offset: 1px; }
+.team-card input[aria-invalid='true'] { border-color: var(--accent-red); }
+.team-error { color: #fecdd3; font-size: 0.82rem; }
+
+.team-members { border: none; display: flex; flex-direction: column; gap: 1rem; min-width: 0; }
+.team-members legend { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-cyan-light); margin-bottom: 0.6rem; }
+.team-members legend span { color: var(--text-muted); font-weight: 500; }
+.member-row { padding: 1rem; border-radius: var(--radius-md); background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); }
+.member-top { display: flex; align-items: center; justify-content: space-between; }
+.icon-btn {
+  display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.12); color: #cbd5e1; cursor: pointer;
+}
+.icon-btn:hover { border-color: var(--accent-red); color: #fecdd3; }
+
+.role-picker { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; margin-top: 0.25rem; }
+.role-chip {
+  position: relative; display: flex; flex-direction: column; gap: 0.1rem; padding: 0.6rem 0.7rem; cursor: pointer;
+  border-radius: var(--radius-sm); background: rgba(30, 41, 59, 0.55); border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: all 160ms ease; min-height: 44px;
+}
+.role-chip input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.role-chip:hover { border-color: var(--accent-amber); }
+.role-chip:focus-within { outline: 2px solid var(--accent-cyan); outline-offset: 2px; }
+.role-chip.is-selected { background: rgba(245, 158, 11, 0.14); border-color: var(--accent-amber); box-shadow: 0 0 18px rgba(245, 158, 11, 0.2); }
+.role-chip__label { font-weight: 700; font-size: 0.9rem; color: #f8fafc; }
+.role-chip__tag { font-size: 0.72rem; color: var(--text-secondary); line-height: 1.3; }
+
+.team-checklist { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; font-size: 0.82rem; color: var(--text-secondary); }
+.team-checklist li { display: inline-flex; align-items: center; gap: 0.35rem; }
+.team-checklist li.is-done { color: #6ee7b7; }
+
+.team-submit { width: 100%; }
+.team-submit.is-blocked { opacity: 0.5; cursor: not-allowed; filter: saturate(0.5); }
+.team-submit.is-blocked:hover { transform: none; box-shadow: var(--shadow-md); }
+.team-note { font-size: 0.78rem; color: var(--text-muted); text-align: center; }
+
+/* ---------- Leaderboard ---------- */
+.lb-card { max-width: 720px; }
+.lb-scroll { overflow-x: auto; }
+.lb-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+.lb-table th, .lb-table td { padding: 0.7rem 0.6rem; text-align: left; border-bottom: 1px solid var(--border-subtle); }
+.lb-table thead th { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); }
+.lb-table tbody th { font-weight: 600; color: #f8fafc; }
+.lb-table tbody th small { display: block; font-weight: 400; color: var(--text-muted); font-size: 0.74rem; }
+.lb-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+.lb-table td.num:nth-of-type(2) { color: var(--accent-amber-light); font-family: var(--font-display); font-weight: 700; }
+.lb-table tr.is-you { background: rgba(245, 158, 11, 0.1); }
+.you-tag { color: var(--accent-amber-light); font-weight: 500; font-size: 0.78rem; }
+.lb-empty { padding: 1.5rem; text-align: center; color: var(--text-secondary); border: 1px dashed var(--border-medium); border-radius: var(--radius-md); }
+
+/* ---------- Finale ---------- */
+.finale-backdrop { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 1rem; background: rgba(7, 10, 18, 0.78); backdrop-filter: blur(6px); }
+.finale-card {
+  width: 100%; max-width: 440px; display: flex; flex-direction: column; align-items: center; gap: 0.6rem; text-align: center;
+  padding: 2rem 1.5rem; background: rgba(11, 16, 28, 0.95); border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-lg); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 50px rgba(245, 158, 11, 0.25);
+}
+.finale-card h2 { font-family: var(--font-display); font-size: 1.7rem; color: #f8fafc; }
+.finale-team { color: #cbd5e1; }
+.finale-score { font-family: var(--font-display); font-size: 3rem; font-weight: 800; color: var(--accent-amber-light); text-shadow: var(--glow-text-amber); }
+.finale-score small { font-size: 1rem; color: var(--text-secondary); }
+.finale-meta { font-size: 0.82rem; color: var(--text-secondary); }
+.finale-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem; margin-top: 0.8rem; }
+
+/* ---------- Delhi clock (floats over the map, under the dashboard header) ---------- */
+.delhi-clock {
+  position: absolute; top: 5.4rem; left: 1.5rem; z-index: 90; min-width: 200px; max-width: 280px;
+  display: flex; flex-direction: column; gap: 0.15rem; padding: 0.7rem 1rem;
+  background: rgba(11, 16, 28, 0.82); backdrop-filter: blur(16px);
+  border: 1px solid rgba(6, 182, 212, 0.35); border-radius: var(--radius-md); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+}
+.delhi-clock__row { display: flex; align-items: center; gap: 0.4rem; color: var(--accent-cyan-light); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+.delhi-clock__time { font-family: var(--font-mono); font-size: 1.6rem; font-weight: 600; color: #f8fafc; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+.delhi-clock__date { font-size: 0.78rem; color: #cbd5e1; }
+.delhi-clock__status { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem 0.6rem; font-size: 0.68rem; color: var(--text-secondary); margin-top: 0.15rem; }
+.delhi-clock__status.is-synced { color: #6ee7b7; }
+.delhi-clock__status.is-fallback { color: var(--accent-amber-light); }
+
+/* ---------- Riddle additions ---------- */
+.riddle-worth { font-size: 0.78rem; color: var(--accent-amber-light); }
+.option-row { display: flex; align-items: stretch; gap: 0.4rem; }
+.option-row .riddle-option-button { flex: 1; min-width: 0; }
+.option-row.is-ruled-out .riddle-option-button span { text-decoration: line-through; opacity: 0.5; }
+.rule-out-btn {
+  flex: 0 0 44px; display: grid; place-items: center; border-radius: var(--radius-md);
+  background: rgba(30, 41, 59, 0.55); border: 1px solid rgba(255, 255, 255, 0.12); color: var(--text-secondary); cursor: pointer;
+}
+.rule-out-btn:hover, .rule-out-btn[aria-pressed='true'] { border-color: var(--accent-red); color: #fecdd3; }
+
+.role-tools { border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: rgba(255, 255, 255, 0.025); }
+.role-tools > summary {
+  display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.9rem; cursor: pointer; list-style: none;
+  font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-cyan-light);
+}
+.role-tools > summary::-webkit-details-marker { display: none; }
+.role-tools > summary:focus-visible { outline: 2px solid var(--accent-cyan); outline-offset: 2px; }
+.role-tools__roles { margin-left: auto; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.02em; text-transform: none; color: var(--text-secondary); }
+.role-tools__body { display: flex; flex-direction: column; gap: 1rem; padding: 0 0.9rem 0.9rem; }
+.role-section h4 { font-size: 0.85rem; color: #f8fafc; margin-bottom: 0.35rem; }
+.role-section h4 small { font-weight: 400; color: var(--text-secondary); }
+.role-tip { font-size: 0.82rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 0.5rem; }
+.role-empty { font-size: 0.8rem; color: var(--text-secondary); font-style: italic; }
+.role-meta { font-size: 0.76rem; color: var(--text-secondary); display: flex; gap: 0.6rem; align-items: center; margin-top: 0.4rem; }
+.role-notes { margin: 0.4rem 0 0 1.1rem; font-size: 0.8rem; color: #cbd5e1; }
+.clue-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.clue-chips li { padding: 0.2rem 0.6rem; font-size: 0.78rem; border-radius: var(--radius-full); background: rgba(6, 182, 212, 0.12); border: 1px solid rgba(6, 182, 212, 0.35); color: #a5f3fc; }
+.seeker-facts { display: grid; gap: 0.4rem; margin-bottom: 0.5rem; }
+.seeker-facts dt { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+.seeker-facts dd { font-size: 0.84rem; color: #e2e8f0; }
+.voice-tool { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.8rem; }
+.voice-btn {
+  display: inline-flex; align-items: center; gap: 0.4rem; min-height: 40px; padding: 0.45rem 0.9rem; cursor: pointer;
+  border-radius: var(--radius-full); background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.5); color: var(--accent-amber-light); font-weight: 600;
+}
+.voice-btn:hover { background: var(--accent-amber); color: #070a12; }
+.voice-meta { font-size: 0.78rem; color: var(--text-secondary); }
+.voice-transcript { flex-basis: 100%; font-size: 0.8rem; color: #cbd5e1; }
+.voice-transcript summary { cursor: pointer; color: var(--accent-cyan-light); }
+.scoring-list { margin: 0.35rem 0 0 1.1rem; }
+
+/* ---------- Pills in the dashboard ---------- */
+.pro-team-pill { max-width: 180px; border-color: rgba(6, 182, 212, 0.3); }
+.pro-team-pill strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--accent-cyan-light); }
+
+/* ---------- Mobile (the original HUD/panel had no small-screen rules) ---------- */
+@media (max-width: 720px) {
+  .team-card { padding: 1.25rem; }
+  .role-picker { grid-template-columns: 1fr; }
+  .lb-hide-sm { display: none; }
+
+  .pro-dashboard-layer { padding: 0.75rem; }
+  .pro-dashboard-top { flex-direction: column; align-items: stretch; gap: 0.5rem; }
+  .pro-metrics-cluster { flex-wrap: wrap; gap: 0.4rem; }
+  .pro-chapter-pill { display: none; }
+  .pro-metric-pill { padding: 0.4rem 0.8rem; font-size: 0.78rem; }
+  .pro-mission-card { max-width: 100%; font-size: 0.78rem; padding: 0.6rem 1rem; }
+
+  .delhi-clock { top: auto; bottom: 5.5rem; left: 0.75rem; min-width: 0; padding: 0.5rem 0.75rem; }
+  .delhi-clock__time { font-size: 1.15rem; }
+  .delhi-clock__date { display: none; }
+
+  .real-map-controls-panel { bottom: 5.5rem; right: 0.75rem; }
+
+}

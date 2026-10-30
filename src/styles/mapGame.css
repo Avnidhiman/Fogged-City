@@ -1,0 +1,244 @@
+/* ==========================================================================
+   FOGGED CITY - CINEMATIC ILLUSTRATED MAP STYLES
+   ========================================================================== */
+
+.map-game-viewport {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #090e18;
+  user-select: none;
+  cursor: grab;
+}
+
+.map-game-viewport:active {
+  cursor: grabbing;
+}
+
+/* Draggable Pan-Zoom Layer */
+.map-interactive-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.map-artwork-wrapper {
+  position: absolute;
+  width: 1800px;
+  height: 1200px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 100px rgba(0, 0, 0, 0.9);
+}
+
+.map-artwork-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  filter: contrast(1.04) brightness(0.95);
+}
+
+/* Atmospheric Volumetric Fog of War Canvas */
+.map-fog-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  mix-blend-mode: screen;
+}
+
+/* Custom Interactive Location Beacons */
+.location-beacon {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  outline: none;
+}
+
+.beacon-core {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(8px);
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  transition: all 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.location-beacon:hover .beacon-core {
+  transform: scale(1.22);
+  box-shadow: 0 0 35px var(--beacon-glow, rgba(245, 158, 11, 0.8));
+}
+
+/* Golden Guide Beam for First Destination: Jantar Mantar */
+.beacon-spotlight {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  width: 140px;
+  height: 380px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, transparent 0%, rgba(245, 158, 11, 0.35) 100%);
+  clip-path: polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%);
+  pointer-events: none;
+  animation: pulseSpotlight 3s ease-in-out infinite alternate;
+}
+
+@keyframes pulseSpotlight {
+  0% { opacity: 0.4; }
+  100% { opacity: 0.9; }
+}
+
+/* Pulsing Beacon Halo Rings */
+.beacon-pulse-ring {
+  position: absolute;
+  inset: -12px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--beacon-glow, rgba(245, 158, 11, 0.6));
+  animation: beaconPulse 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+  pointer-events: none;
+}
+
+.beacon-pulse-ring-delayed {
+  animation-delay: 1.2s;
+}
+
+@keyframes beaconPulse {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+/* Beacon Tag Label */
+.beacon-label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(10px);
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  transition: transform 250ms ease;
+}
+
+.beacon-name {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.beacon-category {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.85;
+}
+
+/* Completed & Locked Variations */
+.location-beacon.completed .beacon-core {
+  background: #10b981;
+  border-color: #6ee7b7;
+  box-shadow: 0 0 25px rgba(16, 185, 129, 0.6);
+}
+
+.location-beacon.locked {
+  opacity: 0.5;
+  filter: grayscale(0.8);
+  cursor: not-allowed;
+}
+
+.location-beacon.locked:hover .beacon-core {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Map Floating Navigation Controls */
+.map-controls-panel {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(14px);
+  padding: 0.6rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: var(--shadow-lg);
+}
+
+.map-control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.map-control-btn:hover {
+  background: var(--accent-amber);
+  color: #070a12;
+  transform: translateY(-1px);
+}
+
+/* Compass Rose on Bottom Left */
+.map-compass-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(14px);
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent-amber-light);
+  box-shadow: var(--shadow-md);
+}

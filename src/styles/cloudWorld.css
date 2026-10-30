@@ -1,0 +1,190 @@
+/* Fogged City — cinematic intro. Replaces src/styles/cloudWorld.css */
+.cloud-world-container {
+  position: relative;
+
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+
+  overflow: hidden;
+
+  background-image: url('/fogged-bg.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: #090e18;
+
+  user-select: none;
+}
+.cloud-webgl-canvas {
+  display: none;
+}
+.cloud-world-stars {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(1px 1px at 12% 17%, #ffffff80 98%, transparent),
+    radial-gradient(1px 1px at 77% 28%, #ffffff90 98%, transparent),
+    radial-gradient(2px 2px at 84% 64%, #ffffff55 98%, transparent),
+    radial-gradient(1px 1px at 37% 75%, #ffffff70 98%, transparent),
+    radial-gradient(1px 1px at 62% 9%, #ffffff90 98%, transparent);
+  background-size: 410px 370px;
+  opacity: .55;
+}
+.cloud-world-moonlight {
+  position: absolute;
+  z-index: 1;
+  inset: -20%;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 52% 34%, #dbeaff3b 0%, #a4bfe01e 17%, transparent 48%);
+  filter: blur(25px);
+  animation: moonBreath 12s ease-in-out infinite alternate;
+}
+.cloud-world-vignette {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, #04081580 0%, transparent 30%, transparent 60%, #040815cf 100%),
+    radial-gradient(ellipse at 50% 46%, transparent 23%, #04081585 100%);
+}
+.cloud-world-interface {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  text-align: center;
+}
+.cloud-world-interface--intro { animation: introAppear 1.6s ease-out both; }
+.cloud-world-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: #efc98d;
+  font: 600 .7rem/1.4 var(--font-main, sans-serif);
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  margin-bottom: 2.8rem;
+}
+.badge-line { width: 30px; height: 1px; background: linear-gradient(90deg, transparent, #d5b57b); }
+.badge-line:last-child { transform: rotate(180deg); }
+.cloud-world-eyebrow {
+  color: #b6c8dc;
+  font: 500 .7rem/1.6 var(--font-main, sans-serif);
+  letter-spacing: .34em;
+  margin: 0 0 1.2rem;
+}
+.cloud-world-title {
+  margin: 0;
+  max-width: 1200px;
+  color: #fff;
+  font-family: var(--font-display, Georgia, serif);
+  font-size: clamp(4rem, 11vw, 10.5rem);
+  font-weight: 800;
+  line-height: .9;
+  letter-spacing: -.075em;
+  text-transform: uppercase;
+  text-shadow: 0 8px 45px #02050bcc, 0 0 60px #dbeaff2b;
+}
+.cloud-world-title span {
+  display: block;
+  color: #e5ebf5;
+  letter-spacing: .13em;
+  font-size: .77em;
+  margin-top: .18em;
+  padding-left: .13em;
+}
+.cloud-world-subtitle {
+  color: #d6e0ee;
+  font: 400 clamp(1rem, 1.8vw, 1.3rem)/1.7 var(--font-main, sans-serif);
+  letter-spacing: .08em;
+  text-shadow: 0 3px 20px #02050b;
+  margin: 2.2rem 0 2.5rem;
+}
+.btn-enter-mist {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4rem;
+  min-height: 64px;
+  padding: 1.1rem 2.4rem;
+  border: 1px solid #fbe3ad;
+  border-radius: 4px;
+  background: linear-gradient(115deg, #f9e6b8, #e4b569 55%, #bf843b);
+  color: #101421;
+  font: 800 .82rem/1.2 var(--font-display, sans-serif);
+  letter-spacing: .19em;
+  cursor: pointer;
+  box-shadow: 0 8px 35px #0009, 0 0 45px #e5ba6b52;
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.btn-enter-mist:hover { transform: translateY(-4px); box-shadow: 0 14px 40px #000b, 0 0 70px #e5ba6b85; }
+.btn-enter-mist:focus-visible { outline: 3px solid #fff; outline-offset: 5px; }
+.cloud-world-footnote {
+  position: absolute;
+  bottom: max(2rem, env(safe-area-inset-bottom));
+  color: #9db0c8;
+  font-size: .64rem;
+  letter-spacing: .27em;
+}
+.cloud-world-interface--chapter { animation: introAppear .9s ease-out both; }
+.cloud-world-chapter-card {
+  width: min(100%, 650px);
+  padding: clamp(2rem, 5vw, 4rem);
+  background: linear-gradient(145deg, #101d32e8, #080e1be8);
+  border: 1px solid #d5b57b70;
+  box-shadow: 0 30px 100px #000b, 0 0 90px #d5b57b1b;
+  backdrop-filter: blur(18px);
+}
+.cloud-world-chapter-card h2 {
+  font-family: var(--font-display, Georgia, serif);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  letter-spacing: -.045em;
+  margin: 0;
+  line-height: 1.05;
+}
+.cloud-world-chapter-card h2 span { display: block; color: #e5bd7e; font-size: .65em; letter-spacing: .12em; margin-top: .4rem; }
+.cloud-world-chapter-card > p:not(.cloud-world-eyebrow) { color: #cbd7e8; line-height: 1.7; margin: 1.6rem auto 2.2rem; }
+@keyframes introAppear { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes moonBreath { from { opacity: .65; transform: scale(1); } to { opacity: 1; transform: scale(1.08); } }
+@media (max-width: 650px) {
+  .cloud-world-interface { padding: 1.25rem; }
+  .cloud-world-badge { letter-spacing: .14em; margin-bottom: 2rem; font-size: .61rem; }
+  .cloud-world-eyebrow { letter-spacing: .13em; font-size: .6rem; }
+  .cloud-world-title { font-size: clamp(3.4rem, 15vw, 6rem); }
+  .cloud-world-subtitle { margin: 2rem 0; }
+  .btn-enter-mist { padding: 1rem 1.4rem; font-size: .72rem; letter-spacing: .12em; }
+  .cloud-world-footnote { font-size: .53rem; letter-spacing: .14em; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cloud-world-moonlight, .cloud-world-interface--intro, .cloud-world-interface--chapter { animation: none; }
+  .btn-enter-mist { transition: none; }
+}
+/* Hide old procedural cloud canvas */
+.cloud-world-container > canvas {
+  display: none !important;
+}
+
+/* Keep title and button above background */
+.cloud-world-interface {
+  position: absolute;
+  z-index: 10;
+}
+
+/* Keep cinematic overlay subtle */
+.cloud-world-vignette {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(5, 10, 20, 0.15) 0%,
+      rgba(5, 10, 20, 0.05) 50%,
+      rgba(5, 10, 20, 0.35) 100%
+    );
+}

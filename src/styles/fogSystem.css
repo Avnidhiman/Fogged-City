@@ -1,0 +1,137 @@
+/* ==========================================================================
+   THE FOGGED CITY — FOG SYSTEM STYLES
+   fogSystem.css
+
+   Contains:
+   • Canvas positioning & isolation
+   • CSS-only fog overlay layers (decoration, not game-logic)
+   • Fog-clear keyframe animation (for future CSS-driven reveals)
+   • Reduced-motion safety net
+   ========================================================================== */
+
+/* ── Canvas: full-screen, non-interactive, above the map ─────────────────── */
+.fog-system-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* Never block map interaction */
+  pointer-events: none;
+  /* Above the map viewport (z-index 2) and colour-cast (z-index 1),
+     below the vignette (z-index 5), well below UI controls (z-index 40+) */
+  z-index: 3;
+  /* Normal compositing — the canvas manages its own blend internally */
+  mix-blend-mode: normal;
+  /* GPU-composited layer for smooth animation */
+  will-change: opacity;
+}
+
+/* ── Decorative CSS fog tendrils ─────────────────────────────────────────── */
+/*
+ * These two ::before pseudo-elements add a pair of very subtle,
+ * purely CSS-driven mist layers that complement the canvas fog.
+ * They use a repeating radial-gradient to create a soft, organic
+ * texture without any visible hard circles.
+ *
+ * IMPORTANT: They sit on .real-map-container (which already has
+ * ::after for the vignette). We inject via a dedicated wrapper
+ * so we don't clobber existing pseudo-elements.
+ */
+
+.fog-css-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 4; /* above canvas, below vignette */
+}
+
+/* Slow wide mist sweep */
+.fog-css-layer::before {
+  content: '';
+  position: absolute;
+  /* Oversized so it covers while translating */
+  width: 220%;
+  height: 220%;
+  top: -60%;
+  left: -60%;
+  background: repeating-radial-gradient(
+    ellipse at 50% 50%,
+    transparent 0px,
+    transparent 120px,
+    rgba(60, 75, 110, 0.045) 160px,
+    transparent 240px
+  );
+  animation: fogDriftSlow 52s linear infinite;
+  will-change: transform;
+}
+
+/* Faster fine-grain wisp layer, slightly offset */
+.fog-css-layer::after {
+  content: '';
+  position: absolute;
+  width: 240%;
+  height: 240%;
+  top: -70%;
+  left: -70%;
+  background: repeating-radial-gradient(
+    ellipse at 38% 62%,
+    transparent 0px,
+    transparent 70px,
+    rgba(80, 95, 140, 0.035) 100px,
+    transparent 160px
+  );
+  animation: fogDriftFast 34s linear infinite reverse;
+  will-change: transform;
+}
+
+/* ── Keyframes ────────────────────────────────────────────────────────────── */
+
+/* Large blob drift — long period so the loop is imperceptible */
+@keyframes fogDriftSlow {
+  0%   { transform: translate(0%,    0%)   rotate(0deg);   }
+  25%  { transform: translate(4%,   -3%)   rotate(2deg);   }
+  50%  { transform: translate(0%,   -6%)   rotate(0deg);   }
+  75%  { transform: translate(-4%,  -3%)   rotate(-2deg);  }
+  100% { transform: translate(0%,    0%)   rotate(0deg);   }
+}
+
+/* Fine wisp drift — slightly faster, different axis */
+@keyframes fogDriftFast {
+  0%   { transform: translate(0%,    0%)   skewX(0deg);    }
+  20%  { transform: translate(-3%,   2%)   skewX(1.5deg);  }
+  40%  { transform: translate(-5%,   0%)   skewX(0deg);    }
+  60%  { transform: translate(-3%,  -2%)   skewX(-1.5deg); }
+  80%  { transform: translate(0%,   -3%)   skewX(0deg);    }
+  100% { transform: translate(0%,    0%)   skewX(0deg);    }
+}
+
+/* Fog-reveal sweep — used on the cleared region when a level is solved */
+@keyframes fogReveal {
+  from {
+    opacity: 1;
+    clip-path: circle(0% at 50% 50%);
+  }
+  to {
+    opacity: 0;
+    clip-path: circle(150% at 50% 50%);
+  }
+}
+
+/* ── Reduced-motion overrides ─────────────────────────────────────────────── */
+/*
+ * When the user has requested reduced motion:
+ *  • Kill all CSS fog animations entirely.
+ *  • The canvas fog will also render statically (handled in FogSystem.jsx).
+ */
+@media (prefers-reduced-motion: reduce) {
+  .fog-css-layer::before,
+  .fog-css-layer::after {
+    animation: none;
+  }
+
+  .fog-system-canvas {
+    /* Keep a static fog at reduced opacity so the game still has atmosphere */
+    opacity: 0.7;
+  }
+}

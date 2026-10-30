@@ -1,0 +1,113 @@
+/* ==========================================================================
+   THE FOGGED CITY — CHARACTER JOURNEY STYLES
+   journey.css
+
+   Styling for:
+   • Skip button overlay
+   • Journey status indicator
+   ========================================================================== */
+
+/* ── Skip button container ──────────────────────────────────────────────── */
+/*
+ * Positioned bottom-center, well above the map controls panel (z-index 40).
+ * pointer-events auto so the button is clickable; everything else is none.
+ */
+.journey-skip-container {
+  position: absolute;
+  bottom: 5.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  /* Slide in from below */
+  animation: journeySkipSlideIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  pointer-events: none;  /* container is pass-through */
+}
+
+@keyframes journeySkipSlideIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ── Status indicator ───────────────────────────────────────────────────── */
+.journey-status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(11, 16, 30, 0.82);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 100px;
+  padding: 0.3rem 0.9rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(226, 232, 240, 0.75);
+  white-space: nowrap;
+  pointer-events: none;  /* informational only */
+}
+
+/* Pulsing dot to signal live movement */
+.journey-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.8);
+  animation: journeyDotPulse 1.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes journeyDotPulse {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.7); }
+}
+
+/* ── Skip button ────────────────────────────────────────────────────────── */
+.journey-skip-btn {
+  pointer-events: auto;     /* must receive clicks */
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(11, 16, 30, 0.88);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 100px;
+  padding: 0.38rem 1.1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #f8fafc;
+  cursor: pointer;
+  transition: background 180ms ease, border-color 180ms ease, transform 160ms ease;
+}
+
+.journey-skip-btn:hover {
+  background: rgba(245, 158, 11, 0.22);
+  border-color: rgba(245, 158, 11, 0.55);
+  color: #fcd34d;
+  transform: scale(1.04);
+}
+
+.journey-skip-btn:focus-visible {
+  outline: 2px solid var(--accent-cyan, #38bdf8);
+  outline-offset: 3px;
+}
+
+.journey-skip-btn:active {
+  transform: scale(0.97);
+}
+
+/* ── Reduced-motion ─────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .journey-skip-container {
+    animation: none;
+  }
+  .journey-status-dot {
+    animation: none;
+    opacity: 0.8;
+  }
+}

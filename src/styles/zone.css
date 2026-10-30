@@ -1,0 +1,129 @@
+/* ==========================================================================
+   FOGGED CITY - ZONE INTRO & GAMEPLAY STYLES
+   ========================================================================== */
+
+.zone-page {
+  padding: 2rem 1.5rem 5rem;
+  max-width: 860px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.zone-intro-card {
+  position: relative;
+  background: var(--bg-card);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.zone-intro-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.zone-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-full);
+}
+
+.zone-intro-title {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-top: 0.5rem;
+}
+
+.zone-intro-subtitle {
+  font-size: 1.1rem;
+  color: var(--accent-cyan-light);
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+
+.zone-objective-box {
+  background: rgba(15, 23, 42, 0.7);
+  border-left: 4px solid var(--accent-amber);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: 1.25rem 1.5rem;
+}
+
+.zone-objective-box h4 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-amber-light);
+  margin-bottom: 0.35rem;
+}
+
+.zone-objective-box p {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.zone-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  background: var(--bg-surface);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  border: 1px solid var(--border-subtle);
+}
+
+.zone-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.zone-meta-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.zone-meta-val {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.zone-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* Shake Animation for Wrong Answers */
+@keyframes shakeError {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+.shake-animation {
+  animation: shakeError 0.4s ease-in-out;
+}

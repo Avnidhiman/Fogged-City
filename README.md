@@ -1,19 +1,67 @@
-🚀 LIVE PROJECT
-[View the Project in Browser](https://Avnidhiman.github.io/Fogged-City)
+# The Fogged City
 
-# React + Vite
+A React + Vite exploration game. Chapter 01 takes a team through five Delhi landmarks, one riddle each.
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+```bash
+npm install
+npm run dev      # http://localhost:5173 (Vite picks the next free port, e.g. 5174, if busy)
+npm test         # unit + flow tests (Vitest)
+npm run build
+```
 
-Currently, two official plugins are available:
+## Routes
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+| Path | What it is |
+| --- | --- |
+| `/` | Cinematic intro |
+| `/team` | Team setup (name, members, roles) |
+| `/chapters` | Chapter selection |
+| `/delhi` | Live Delhi map + riddles. Redirects to `/team` until a team exists |
+| `/leaderboard` | Scores of finished runs, stored on this device |
+| `/scene` | The original cloud-intro scene |
 
-## React Compiler
+## Game flow
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. **Team setup.** A team needs a name, at least two uniquely named members (max 6) and one role each: **Cipher**, **Seeker** or **Voice Lore**. The team is saved with the game and kept as you progress. Use the team icon in the HUD to edit it.
+2. **Riddles.** Open a landmark on the map. Each riddle has a collapsed **Team toolkit** showing tools only for roles on your team:
+   - **Cipher**: key numbers and names pulled from the riddle text, plus ✗ buttons for private "ruled out" notes (notes never affect answers).
+   - **Seeker**: district, coordinates, objective and an OpenStreetMap link.
+   - **Voice Lore**: play/pause for the riddle's recording. Riddles without audio show a friendly empty state.
+3. **Hints** are hidden until requested.
+4. **Finish** all levels to see your final score and the leaderboard.
 
-## Expanding the Oxlint configuration
+### Scoring
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/crea...
+- Each solved level awards its `pointsReward` (250 in Chapter 01, 1,250 total).
+- Hints are free and wrong answers are not penalised (the original game had no penalties, so none were added). The rules live in `src/data/scoring.js` and are shown in the app.
+- Ties on the leaderboard are broken by fewer hints, then earlier finish.
+
+### Adding role content to a riddle (`src/data/cities/delhi.js`)
+
+All optional, no code changes needed:
+
+```js
+riddle: {
+  // ...
+  audio: { src: '/audio/jantar-mantar.mp3', label: 'The keeper’s tale', transcript: 'Optional text for accessibility' },
+  cipherNotes: ['Extra decoding tip'],
+  seekerNotes: ['Extra field tip'],
+}
+```
+
+Put audio files in `public/audio/`. None are included yet.
+
+## Delhi clock and configuration
+
+The map on `/delhi` shows the current time in Delhi (IST). The app asks a public time API once, calculates the difference from the device clock, ticks locally each second and re-syncs every 5 minutes. If the services can't be reached it shows the device clock labelled as such, with a Retry button.
+
+No API key is needed. To use your own endpoint, copy `.env.example` to `.env` and set `VITE_TIME_API_URL` (optional, restart the dev server afterwards). Never put secrets in `VITE_*` variables: they are public in the built app.
+
+## What is stored in your browser (localStorage)
+
+| Key | Contents |
+| --- | --- |
+| `the_fogged_city_save_v3` | Team, progress, score, hints opened, sound setting |
+| `the_fogged_city_leaderboard_v1` | Finished runs: team name, score, hints, date |
+
+There is no backend, so the leaderboard is per browser and per device. "Restart expedition" in the HUD resets score and progress but keeps the team and the leaderboard. "Clear scores" on the leaderboard page erases the saved scores.

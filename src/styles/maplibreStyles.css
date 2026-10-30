@@ -1,0 +1,207 @@
+/* ==========================================================================
+   THE FOGGED CITY - MAPLIBRE GL JS & REAL MAP STYLES
+   Cinematic midnight-city aesthetic
+   ========================================================================== */
+
+@import 'maplibre-gl/dist/maplibre-gl.css';
+
+.real-map-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  /* Deep midnight base so any tile-load gaps are invisible */
+  background: #05080f;
+}
+
+/* MapLibre DOM Node */
+.maplibre-viewport {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── Cinematic atmospheric layers ─────────────────────────────────────── */
+
+/*
+ * 1. Colour cast — a very subtle navy/indigo tint blended over the map
+ *    without blocking interactivity.  The low opacity keeps it tasteful.
+ */
+.maplibre-viewport::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* Navy-indigo midnight tint */
+  background: rgba(10, 15, 40, 0.22);
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: multiply;
+}
+
+/*
+ * 2. Vignette — darkens the edges for a cinematic "torch-lit" look.
+ *    Uses a radial gradient that's fully transparent in the centre.
+ */
+.real-map-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    transparent 30%,
+    rgba(4, 6, 16, 0.55) 72%,
+    rgba(3, 5, 14, 0.85) 100%
+  );
+}
+
+/* Fog rendering is now handled by FogSystem.jsx + fogSystem.css */
+
+/* Custom MapLibre Landmark Markers */
+.custom-map-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  z-index: 25;
+  transition: transform 250ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  outline: none;
+}
+
+.custom-map-marker:hover {
+  transform: scale(1.18) translateY(-4px);
+}
+
+.marker-pin-head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(10px);
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+  transition: all 250ms ease;
+}
+
+.marker-pin-tip {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid rgba(15, 23, 42, 0.9);
+  margin-top: -1px;
+}
+
+/* Marker State Variations */
+.custom-map-marker.active-beacon .marker-pin-head {
+  border-color: var(--accent-amber);
+  color: var(--accent-amber-light);
+  box-shadow: 0 0 30px rgba(245, 158, 11, 0.7), 0 10px 25px rgba(0, 0, 0, 0.8);
+}
+
+.custom-map-marker.completed-beacon .marker-pin-head {
+  background: #10b981;
+  border-color: #6ee7b7;
+  color: #ffffff;
+  box-shadow: 0 0 25px rgba(16, 185, 129, 0.5);
+}
+
+.custom-map-marker.locked-beacon {
+  opacity: 0.55;
+  filter: grayscale(0.85);
+  cursor: not-allowed;
+}
+
+.custom-map-marker.locked-beacon:hover {
+  transform: none;
+}
+
+/* Pulsing Beacon Halo */
+.marker-beacon-halo {
+  position: absolute;
+  inset: -10px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--accent-amber);
+  animation: beaconPulseAnim 2.2s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+  pointer-events: none;
+}
+
+@keyframes beaconPulseAnim {
+  0% { transform: scale(0.8); opacity: 0.9; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* Marker Label Tag */
+.marker-floating-label {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(11, 16, 28, 0.88);
+  backdrop-filter: blur(12px);
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.marker-title {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.marker-district {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-amber-light);
+}
+
+/* Floating Navigation Controls */
+.real-map-controls-panel {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  background: rgba(11, 16, 28, 0.82);
+  backdrop-filter: blur(16px);
+  padding: 0.6rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: var(--shadow-lg);
+}
+
+.real-map-control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.real-map-control-btn:hover {
+  background: var(--accent-amber);
+  color: #070a12;
+  transform: translateY(-2px);
+}
